@@ -13,7 +13,7 @@ placeholder字符串上移动画交互，继承iOS UITextField实现 ，低侵�
 
 ###1.缩放
 
-设置动画目标字体可以实现缩放效果，比如textfield你用系统默认的字体，只要将下面这个属性设置成11号字即可实现效果图中的缩放效果。
+设置动画目标字体可以实现缩放效果，比如textfield你用系统默认的字体，只要将下面这个属性设置成11号字即可实现效果图中的缩放效果。（bF0为BHBMagicField实例，后面不再赘述）
 
     bF0.animationFont = [UIFont systemFontOfSize:11];
 
