@@ -14,6 +14,7 @@
 @property (nonatomic,strong) UIFont * placeholderFont;
 @property (nonatomic,strong) UIColor * placeholderColor;
 @property (nonatomic,strong) UILabel * placeholderAnimationLbl;
+@property (nonatomic,strong) NSAttributedString * placeHolderAttributedString;
 
 @end
 
@@ -71,34 +72,41 @@
 {
     _placeholderText = placeholder;
     self.placeholderAnimationLbl.text = placeholder;
-    
 }
 
 - (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder{
+    _placeHolderAttributedString = attributedPlaceholder;
     self.placeholderAnimationLbl.attributedText = attributedPlaceholder;
 }
 
+
 - (BOOL)becomeFirstResponder{
     if (self.placeholdAnimationable) {
-    CGRect targetFrame = self.placeholderAnimationLbl.frame;
-    targetFrame.origin.y = - self.moveDistance;
-    [UIView animateWithDuration:.25 animations:^{
-        self.placeholderAnimationLbl.frame = targetFrame;
-        self.placeholderAnimationLbl.textColor = self.animationColor;
-        self.placeholderAnimationLbl.font = self.animationFont;
-    }];
+        CGRect targetFrame = self.placeholderAnimationLbl.frame;
+        targetFrame.origin.y = - self.moveDistance;
+        [UIView animateWithDuration:.25 animations:^{
+            self.placeholderAnimationLbl.frame = targetFrame;
+            self.placeholderAnimationLbl.textColor = self.animationColor;
+            self.placeholderAnimationLbl.font = self.animationFont;
+        }];
     }
     return [super becomeFirstResponder];
 }
 
 - (BOOL)resignFirstResponder{
     if (self.placeholdAnimationable) {
+        if (self.text.length > 0) {
+            return [super resignFirstResponder];
+        }
         CGRect targetFrame = self.placeholderAnimationLbl.frame;
         targetFrame.origin.y = 0;
         [UIView animateWithDuration:.25 animations:^{
             self.placeholderAnimationLbl.frame = targetFrame;
             self.placeholderAnimationLbl.textColor = self.placeholderColor;
             self.placeholderAnimationLbl.font = self.placeholderFont;
+            if (self.placeHolderAttributedString) {
+                self.placeholderAnimationLbl.attributedText = self.placeHolderAttributedString;
+            }
         }];
     }
     return [super resignFirstResponder];
