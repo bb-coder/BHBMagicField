@@ -74,6 +74,10 @@
     
 }
 
+- (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder{
+    self.placeholderAnimationLbl.attributedText = attributedPlaceholder;
+}
+
 - (BOOL)becomeFirstResponder{
     if (self.placeholdAnimationable) {
     CGRect targetFrame = self.placeholderAnimationLbl.frame;
