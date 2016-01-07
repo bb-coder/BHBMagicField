@@ -61,6 +61,8 @@
 - (void)setFont:(UIFont *)font{
     [super setFont:font];
     self.placeholderFont = font;
+    self.placeholderAnimationLbl.font = self.font;
+    
 }
 
 
@@ -95,7 +97,7 @@
 
 - (BOOL)resignFirstResponder{
     if (self.placeholdAnimationable) {
-        if (self.text.length > 0) {
+        if (self.text.length > 0 || self.placeholderAnimationLbl.frame.origin.y == 0) {
             return [super resignFirstResponder];
         }
         CGRect targetFrame = self.placeholderAnimationLbl.frame;
