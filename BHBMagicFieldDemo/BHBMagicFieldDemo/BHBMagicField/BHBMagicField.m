@@ -49,7 +49,6 @@
 }
 
 
-
 - (void)layoutSubviews{
     [super layoutSubviews];
 }
@@ -67,6 +66,11 @@
     self.placeholderFont = font;
     self.placeholderAnimationLbl.font = self.font;
     
+}
+
+- (void)setText:(NSString *)text{
+    [super setText:text];
+    [self upAnimation];
 }
 
 
@@ -87,34 +91,15 @@
 
 
 - (BOOL)becomeFirstResponder{
-    if (self.placeholdAnimationable) {
-        CGRect targetFrame = self.placeholderAnimationLbl.frame;
-        targetFrame.origin.y = - self.moveDistance;
-        [UIView animateWithDuration:.25 animations:^{
-            self.placeholderAnimationLbl.frame = targetFrame;
-            self.placeholderAnimationLbl.textColor = self.animationColor;
-            self.placeholderAnimationLbl.font = self.animationFont;
-        }];
-    }
+    [self upAnimation];
     return [super becomeFirstResponder];
 }
 
 - (BOOL)resignFirstResponder{
-    if (self.placeholdAnimationable) {
-        if (self.text.length > 0 || self.placeholderAnimationLbl.frame.origin.y == 0) {
-            return [super resignFirstResponder];
-        }
-        CGRect targetFrame = self.placeholderAnimationLbl.frame;
-        targetFrame.origin.y = 0;
-        [UIView animateWithDuration:.25 animations:^{
-            self.placeholderAnimationLbl.frame = targetFrame;
-            self.placeholderAnimationLbl.textColor = self.placeholderColor;
-            self.placeholderAnimationLbl.font = self.placeholderFont;
-            if (self.placeHolderAttributedString) {
-                self.placeholderAnimationLbl.attributedText = self.placeHolderAttributedString;
-            }
-        }];
+    if (self.text.length > 0 || self.placeholderAnimationLbl.frame.origin.y == 0) {
+        return [super resignFirstResponder];
     }
+    [self restoreAnimation];
     return [super resignFirstResponder];
 }
 
@@ -130,6 +115,34 @@
         }
     }else{
         self.placeholderAnimationLbl.hidden = NO;
+    }
+    
+}
+
+- (void)upAnimation{
+    if (self.placeholdAnimationable) {
+        CGRect targetFrame = self.placeholderAnimationLbl.frame;
+        targetFrame.origin.y = - self.moveDistance;
+        [UIView animateWithDuration:.25 animations:^{
+            self.placeholderAnimationLbl.frame = targetFrame;
+            self.placeholderAnimationLbl.textColor = self.animationColor;
+            self.placeholderAnimationLbl.font = self.animationFont;
+        }];
+    }
+}
+
+- (void)restoreAnimation{
+    if (self.placeholdAnimationable) {
+        CGRect targetFrame = self.placeholderAnimationLbl.frame;
+        targetFrame.origin.y = 0;
+        [UIView animateWithDuration:.25 animations:^{
+            self.placeholderAnimationLbl.frame = targetFrame;
+            self.placeholderAnimationLbl.textColor = self.placeholderColor;
+            self.placeholderAnimationLbl.font = self.placeholderFont;
+            if (self.placeHolderAttributedString) {
+                self.placeholderAnimationLbl.attributedText = self.placeHolderAttributedString;
+            }
+        }];
     }
     
 }
