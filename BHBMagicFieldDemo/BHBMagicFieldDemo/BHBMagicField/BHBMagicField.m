@@ -49,8 +49,18 @@
 }
 
 
+
 - (void)layoutSubviews{
     [super layoutSubviews];
+}
+
+- (void)setText:(NSString *)text{
+    [super setText:text];
+    if (text.length > 0) {
+        [self upAnimation];
+    }else{
+        [self restoreAnimation];
+    }
 }
 
 - (void)setFrame:(CGRect)frame{
@@ -66,11 +76,6 @@
     self.placeholderFont = font;
     self.placeholderAnimationLbl.font = self.font;
     
-}
-
-- (void)setText:(NSString *)text{
-    [super setText:text];
-    [self upAnimation];
 }
 
 
@@ -96,9 +101,6 @@
 }
 
 - (BOOL)resignFirstResponder{
-    if (self.text.length > 0 || self.placeholderAnimationLbl.frame.origin.y == 0) {
-        return [super resignFirstResponder];
-    }
     [self restoreAnimation];
     return [super resignFirstResponder];
 }
@@ -133,6 +135,9 @@
 
 - (void)restoreAnimation{
     if (self.placeholdAnimationable) {
+        if (self.text.length > 0 || self.placeholderAnimationLbl.frame.origin.y == 0) {
+            return ;
+        }
         CGRect targetFrame = self.placeholderAnimationLbl.frame;
         targetFrame.origin.y = 0;
         [UIView animateWithDuration:.25 animations:^{
@@ -144,8 +149,7 @@
             }
         }];
     }
-    
-}
 
+}
 
 @end

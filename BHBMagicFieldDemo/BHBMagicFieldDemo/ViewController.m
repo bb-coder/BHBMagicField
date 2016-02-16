@@ -22,6 +22,7 @@
     bF0.frame = CGRectMake(10, 70, self.view.frame.size.width - 20, 50);
     bF0.placeholder = @"缩放(Scal)";
     bF0.animationFont = [UIFont systemFontOfSize:11];
+//    bF0.text = @"we are family";
     [self.view addSubview:bF0];
     
     BHBMagicField * bF1 = [[BHBMagicField alloc] init];
